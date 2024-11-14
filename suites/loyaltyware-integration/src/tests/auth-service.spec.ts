@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { OAuthServiceClient } from '../lib/services/oath/service-client';
-import { OAuthResponse } from '../lib/services/oath/response';
+import { OAuthServiceClient } from '../lib/services/oauth/service-client';
+import { OAuthResponse } from '../lib/services/oauth/response';
 
 test('Auth Token Generation Helath Check', async () => {
     const response = await OAuthServiceClient().generateToken();

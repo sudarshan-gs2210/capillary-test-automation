@@ -1,5 +1,5 @@
 import { ContextBuilder } from "@capillary-test-automation/playwright-lib"
-import { OAuthServiceClient } from "../oath/service-client"
+import { OAuthServiceClient } from "../oauth/service-client"
 
 export const AuthContext = async () => {
     const token = await OAuthServiceClient().generateToken();
