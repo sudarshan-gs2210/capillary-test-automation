@@ -1,4 +1,4 @@
-import { GenericResponse } from "../common/response"
+import { GenericResponse } from "../common/generic-response"
 
 type OAuthResponseData = {
     accessToken: string,

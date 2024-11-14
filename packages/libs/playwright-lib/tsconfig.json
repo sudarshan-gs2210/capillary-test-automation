@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -12,5 +12,9 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
-  "references": [{ "path": "../../tsconfig.base.json" }]
+  "references": [
+    {
+      "path": "../../../tsconfig.base.json"
+    }
+  ]
 }

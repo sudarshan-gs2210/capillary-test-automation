@@ -7,7 +7,7 @@ const currentContext = (requestContext?: APIRequestContext) => requestContext ??
 
 export const APIClient = (requestContext?: APIRequestContext) => {
     return {
-        async getResponse<Request, Response>(request: APIRequest<Request>) {
+        async getResponse<Response>(request: APIRequest) {
             const context = await currentContext(requestContext);
             const response = await context.fetch(request.path, request)
             const responseType = response.headers()['content-type']

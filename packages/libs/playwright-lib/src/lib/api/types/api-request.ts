@@ -1,4 +1,4 @@
-export type APIRequest<T> = {
+export type APIRequest = {
     /**
      * Endpoint
      */
@@ -8,7 +8,7 @@ export type APIRequest<T> = {
      * and `content-type` header will be set to `application/json` if not explicitly set. Otherwise the `content-type`
      * header will be set to `application/octet-stream` if not explicitly set.
      */
-    data?: T
+    data?: Record<string, any>
 
     /**
      * Whether to throw on response codes other than 2xx and 3xx. By default response object is returned for all status
@@ -59,29 +59,29 @@ export type APIRequest<T> = {
      * name, mime-type and its content.
      */
     multipart?:
-        | FormData
+    | FormData
+    | {
+        [key: string]:
+        | string
+        | number
+        | boolean
         | {
-              [key: string]:
-                  | string
-                  | number
-                  | boolean
-                  | {
-                        /**
-                         * File name
-                         */
-                        name: string
+            /**
+             * File name
+             */
+            name: string
 
-                        /**
-                         * File type
-                         */
-                        mimeType: string
+            /**
+             * File type
+             */
+            mimeType: string
 
-                        /**
-                         * File content
-                         */
-                        buffer: Buffer
-                    }
-          }
+            /**
+             * File content
+             */
+            buffer: Buffer
+        }
+    }
 
     /**
      * Query parameters to be sent with the URL.

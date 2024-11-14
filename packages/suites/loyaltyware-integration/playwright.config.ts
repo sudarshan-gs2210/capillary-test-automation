@@ -1,8 +1,9 @@
 import { PlaywrightTestConfig } from '@playwright/test'
 import { config } from 'dotenv';
+import { join } from 'path';
 
 const envFile = process.env.ENV_FILE || '.env';
-config({ path: envFile });
+config({ path: join(__dirname, envFile) });
 
 export const playwrightConfig: PlaywrightTestConfig = {
     reporter: 'html',
@@ -13,7 +14,7 @@ export const playwrightConfig: PlaywrightTestConfig = {
             'content-type': 'application/json'
         }
     },
-    testDir: './src/tests'
+    testDir: './src/tests',
 }
 
 export default playwrightConfig;

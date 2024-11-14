@@ -1,7 +1,0 @@
-{
-  "name": "@capillary-test-automation/playwright-lib",
-  "packageManager": "yarn@4.2.2",
-  "devDependencies": {
-    "@types/node": "^22.9.0"
-  }
-}
