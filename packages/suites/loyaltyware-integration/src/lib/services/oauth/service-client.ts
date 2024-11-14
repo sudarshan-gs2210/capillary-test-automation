@@ -2,6 +2,7 @@ import { APIClient } from "@capillary-test-automation/playwright-lib";
 import { OAuthRequest } from "./request";
 import { OAuthResponse } from "./response";
 import { ENDPOINTS } from "../../constants/endpoints";
+import { ENVCONFIG } from "../../constants/envconfig";
 
 export const OAuthServiceClient = {
     token: undefined as string | undefined,
