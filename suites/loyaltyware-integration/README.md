@@ -1,0 +1,1 @@
+# loyaltyware-integration

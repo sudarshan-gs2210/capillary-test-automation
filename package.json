@@ -1,4 +1,17 @@
 {
   "name": "capillary-test-automation",
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.2.2",
+  "workspaces": {
+    "packages": [
+      "libs/*",
+      "suites/*"
+    ]
+  },
+  "dependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "dotenv": "^16.4.5"
+  }
 }
