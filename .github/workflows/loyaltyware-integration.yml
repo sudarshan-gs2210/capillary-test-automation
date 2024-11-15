@@ -3,12 +3,12 @@ name: Loyaltyware Integration Tests
 on:
   push:
     branches:
-      - main 
+      - main
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to run the workflow from'
-        default: 'main'
+        description: "Branch to run the workflow from"
+        default: "main"
         required: true
 
 jobs:
@@ -24,15 +24,26 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Enable Corepack and install Yarn
         run: |
-            corepack enable
-            corepack prepare yarn@4.2.2 --activate
+          corepack enable
+          corepack prepare yarn@4.2.2 --activate
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Set environment variables
+        run: |
+          echo "CAP_CLUSTER=${{ secrets.CAP_CLUSTER }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
+          echo "PARENT_ORG_ID=${{ secrets.PARENT_ORG_ID }}" >> $GITHUB_ENV
+          echo "CHILD_ORG_ID=${{ secrets.CHILD_ORG_ID }}" >> $GITHUB_ENV
+          echo "PARENT_CLIENT_KEY=${{ secrets.PARENT_CLIENT_KEY }}" >> $GITHUB_ENV
+          echo "PARENT_CLIENT_SECRET=${{ secrets.PARENT_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "CHILD_CLIENT_KEY=${{ secrets.CHILD_CLIENT_KEY }}" >> $GITHUB_ENV
+          echo "CHILD_CLIENT_SECRET=${{ secrets.CHILD_CLIENT_SECRET }}" >> $GITHUB_ENV
 
       - name: Run Playwright API tests
         working-directory: packages/suites/loyaltyware-integration
@@ -62,6 +73,6 @@ jobs:
           # Commit and push the new report
           git commit -m "Deploy Playwright report - ${TIMESTAMP}"
           git push origin gh-pages
-          
+
       - name: Clean up
         run: rm -rf temp-report
