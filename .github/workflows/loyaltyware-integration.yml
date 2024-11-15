@@ -1,0 +1,62 @@
+name: Loyaltyware Integration Tests
+
+on:
+  push:
+    branches:
+      - main 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run the workflow from'
+        default: 'main'
+        required: true
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Playwright API tests
+        working-directory: packages/suites/loyaltyware-integration
+        run: yarn test
+
+      - name: Deploy Playwright report to GitHub Pages
+        if: success()
+        run: |
+          # Create a temporary directory to hold the report
+          mkdir -p temp-report
+          cp -R packages/suites/loyaltyware-integration/playwright-report/* temp-report
+
+          # Switch to gh-pages branch
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages || git checkout --orphan gh-pages
+
+          # Remove old reports, keeping only the last 10
+          ls -dt */ | tail -n +11 | xargs rm -rf
+
+          # Create a timestamped folder for the latest report and move it
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          mv temp-report "${TIMESTAMP}"
+          git add "${TIMESTAMP}"
+
+          # Commit and push the new report
+          git commit -m "Deploy Playwright report - ${TIMESTAMP}"
+          git push origin gh-pages
+          
+      - name: Clean up
+        run: rm -rf temp-report
