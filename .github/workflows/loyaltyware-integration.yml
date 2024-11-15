@@ -26,6 +26,11 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Enable Corepack and install Yarn
+        run: |
+            corepack enable
+            corepack prepare yarn@4.2.2 --activate
+
       - name: Install dependencies
         run: yarn install
 
