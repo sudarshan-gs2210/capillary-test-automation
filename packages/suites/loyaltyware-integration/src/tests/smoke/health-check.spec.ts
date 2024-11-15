@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { PingClient } from "../lib/services/ping/service-client";
+import { PingClient } from "../../lib/services/ping/service-client";
 
 test('Health Check', async () => {
     const response = await PingClient.ping();
