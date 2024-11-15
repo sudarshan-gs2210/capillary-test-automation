@@ -1,8 +1,8 @@
 import { APIClient } from "@capillary-test-automation/playwright-lib"
 import { PingResponse } from "./response"
 import { AuthContext } from "../common/auth-context"
-import { ENDPOINTS } from "../../constants/endpoints"
-import { ENVCONFIG } from "../../constants/envconfig"
+import { ENDPOINTS } from "../../config/endpoints"
+import { ENVCONFIG } from "../../config/envconfig"
 
 export const PingClient = {
     async ping() {

@@ -1,6 +1,6 @@
 import { APIClient } from "@capillary-test-automation/playwright-lib";
 import { AuthContext } from "../common/auth-context"
-import { ENDPOINTS } from "../../constants/endpoints";
+import { ENDPOINTS } from "../../config/endpoints";
 import { BrandRewardsResponse } from "./response";
 
 export const BrandRewardServiceClient = {

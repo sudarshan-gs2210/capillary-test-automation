@@ -1,33 +1,40 @@
 import { APIClient } from "@capillary-test-automation/playwright-lib";
 import { OAuthRequest } from "./request";
 import { OAuthResponse } from "./response";
-import { ENDPOINTS } from "../../constants/endpoints";
-import { ENVCONFIG } from "../../constants/envconfig";
+import { ENDPOINTS } from "../../config/endpoints";
+import { ENVCONFIG } from "../../config/envconfig";
 
 export const OAuthServiceClient = {
-    token: undefined as string | undefined,
-    expiration: 0,
+    tokenStore: {} as Record<string, { token: string; expiration: number } | undefined>,
 
-    async generateToken(): Promise<string> {
+    async generateToken(data: { key: string, secret: string } = {
+        key: ENVCONFIG.PARENT_CLIENT_KEY,
+        secret: ENVCONFIG.PARENT_CLIENT_SECRET
+    }): Promise<string> {
         const now = Date.now();
+        const keySecretCombo = `${data.key}:${data.secret}`;
 
-        if (this.token && this.expiration > now) {
-            return this.token;
+        const existingTokenData = this.tokenStore[keySecretCombo];
+
+        if (existingTokenData && existingTokenData.expiration > now) {
+            return existingTokenData.token;
         }
 
         const response = await APIClient().getResponse<OAuthResponse>({
             path: ENDPOINTS.OAUTH,
             method: 'POST',
             data: {
-                key: ENVCONFIG.OAUTH_CLIENT_KEY,
-                secret: ENVCONFIG.OAUTH_CLIENT_SECRET
+                key: data.key,
+                secret: data.secret,
             } as OAuthRequest,
         });
 
-        this.token = response.body.data.accessToken;
-        this.expiration = now + response.body.data.ttlSeconds * 1000;
+        const newToken = response.body.data.accessToken;
+        const expiration = now + response.body.data.ttlSeconds * 1000;
 
-        return this.token;
-    }
+        this.tokenStore[keySecretCombo] = { token: newToken, expiration };
+
+        return newToken;
+    },
 };
 
