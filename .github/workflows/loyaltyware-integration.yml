@@ -40,7 +40,7 @@ jobs:
               run: yarn install --immutable
 
             - name: Lint
-              run: yarn nx affected -t lint
+              run: yarn nx affected -t lint --base=${{ github.event.inputs.branch || github.ref }} --head=HEAD
 
             - name: Set environment variables
               run: |
