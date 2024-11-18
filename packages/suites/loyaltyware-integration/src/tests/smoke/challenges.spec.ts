@@ -1,5 +1,4 @@
 import test, { expect } from "@playwright/test";
-import { describe } from "node:test";
 import { Challenges } from "../../lib/services/challenges/service-client";
 
 test.describe("User", () => {
@@ -34,7 +33,7 @@ test.describe("User", () => {
 
     expect(response.statusCode).toBe(200);
   });
-  
+
   test("Challenge Unenroll Health Check", async () => {
     const response = await Challenges.postChallengeUnenroll();
 

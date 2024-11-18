@@ -1,4 +1,4 @@
 export type OAuthRequest = {
-    key: string;
-    secret: string;
+    key: string
+    secret: string
 }

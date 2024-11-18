@@ -3,24 +3,24 @@ export type BrandRewardsResponse = {
 }
 
 type RewardList = {
-    id: string,
-    name: string,
-    status: string,
-    startTime: string,
-    endTime: string,
-    type: string,
-    priority: number,
-    enabled: boolean,
-    intouchPoints: number,
-    redemptionType: string,
-    groups: any,
-    rewardRank: null,
-    customFields: null,
+    id: string
+    name: string
+    status: string
+    startTime: string
+    endTime: string
+    type: string
+    priority: number
+    enabled: boolean
+    intouchPoints: number
+    redemptionType: string
+    groups: any
+    rewardRank: null
+    customFields: null
     paymentConfigs: PaymentConfigs[]
 }
 
 type PaymentConfigs = {
-    paymentMode: string,
-    id: number,
+    paymentMode: string
+    id: number
     points: number
 }

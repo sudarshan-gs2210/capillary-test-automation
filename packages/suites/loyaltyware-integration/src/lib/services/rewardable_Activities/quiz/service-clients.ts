@@ -1,5 +1,5 @@
 import { APIClient } from "@capillary-test-automation/playwright-lib";
-import { AuthContext, AuthContextWithParentChild } from "../../common/auth-context";
+import { AuthContextWithParentChild } from "../../common/auth-context";
 import { ENVCONFIG } from "../../../config/envconfig";
 import { ENDPOINTS } from "../../../config/endpoints";
 

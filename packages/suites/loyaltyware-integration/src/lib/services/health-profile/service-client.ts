@@ -6,13 +6,13 @@ import { getHealthParams } from "./params/get-healthparams";
 
 export const HealthProfileServiceClient = {
     async getHealthScore() {
-        const context = await AuthContextWithParentChild();
+        const context = await AuthContextWithParentChild()
         return APIClient(context).getResponse<Record<string, any>>({
             method: 'GET',
-            path: `${ENVCONFIG.HOST}${ENDPOINTS.HEALTH_SCORE}`
+            path: `${ENVCONFIG.HOST}${ENDPOINTS.HEALTH_SCORE}`,
         })
     },
-    async getHealthFactor(params:getHealthParams) {
+    async getHealthFactor(params: getHealthParams) {
         const context = await AuthContextWithParentChild();
         return APIClient(context).getResponse<Record<string, any>>({
             method: 'GET',
@@ -20,14 +20,12 @@ export const HealthProfileServiceClient = {
             params
         })
     },
-    async getBiometricKPI(params:getHealthParams) {
+    async getBiometricKPI(params: getHealthParams) {
         const context = await AuthContextWithParentChild();
         return APIClient(context).getResponse<Record<string, any>>({
             method: 'GET',
             path: `${ENVCONFIG.HOST}${ENDPOINTS.HEALTH_BIOMETRIC_KPI}`,
             params
         })
-    },
-
-
+    }
 }

@@ -1,4 +1,3 @@
-
 import { APIRequestContext, request } from '@playwright/test'
 import {
     ClientCertificate,
@@ -20,8 +19,8 @@ export class ContextBuilder {
     }
 
     public headers(headers: { [key: string]: string }) {
-        this.contextOptions.extraHTTPHeaders = headers;
-        return this;
+        this.contextOptions.extraHTTPHeaders = headers
+        return this
     }
 
     public ignoreHTTPSError(value?: boolean): this {

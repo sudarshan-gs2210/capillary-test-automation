@@ -1,6 +1,5 @@
 import test, { expect } from "@playwright/test";
 import { Rewardable_Activites } from "../../lib/services/rewardable_Activities/service-client";
-import { describe } from "node:test";
 
 test.describe("Rewardable activites", () => {
   test("Rewardable Activites Spec Health Check", async () => {
@@ -23,9 +22,7 @@ test.describe("Rewardable activites", () => {
       typeFilter: "challenge",
     });
 
-    console.log(response);
-
-    // expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
   test("Rewardable claim Rewards Spec Health Check", async () => {
     const response = await Rewardable_Activites.postClaimRewads({
@@ -33,9 +30,7 @@ test.describe("Rewardable activites", () => {
       externalFacingId: "quizTestUser100",
     });
 
-    console.log(response);
-
-    // expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
 
   test("Rewardable Rally Stride History Spec Health Check", async () => {

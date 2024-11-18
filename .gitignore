@@ -12,10 +12,35 @@
 #!.yarn/cache
 .pnp.*
 
+# compiled output
+dist
+tmp
+/out-tsc
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 test-results
 playwright-report
 node_modules
 
 .DS_Store
+Thumbs.db
 .env
-g
+.husky/_
+
+
+.nx/cache
+.nx/workspace-data

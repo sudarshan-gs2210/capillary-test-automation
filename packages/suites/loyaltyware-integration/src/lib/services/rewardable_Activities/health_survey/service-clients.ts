@@ -1,5 +1,5 @@
 import { APIClient } from "@capillary-test-automation/playwright-lib";
-import { AuthContext, AuthContextWithParentChild } from "../../common/auth-context";
+import { AuthContextWithParentChild } from "../../common/auth-context";
 import { ENVCONFIG } from "../../../config/envconfig";
 import { ENDPOINTS } from "../../../config/endpoints";
 import { GETHELATHSURVEY } from "./params/get-health-survey";
@@ -32,7 +32,7 @@ export const Rewardable_HealthSurvey = {
       path: `${ENVCONFIG.HOST}${ENDPOINTS.HEALTH_SURVEY}`,
     });
   },
- 
+
   async getHealthSurvey(params: GETHELATHSURVEY) {
     const authContext = await AuthContextWithParentChild();
     return APIClient(authContext).getResponse<Record<string, any>>({

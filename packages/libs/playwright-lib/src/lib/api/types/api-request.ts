@@ -59,29 +59,29 @@ export type APIRequest = {
      * name, mime-type and its content.
      */
     multipart?:
-    | FormData
-    | {
-        [key: string]:
-        | string
-        | number
-        | boolean
+        | FormData
         | {
-            /**
-             * File name
-             */
-            name: string
+              [key: string]:
+                  | string
+                  | number
+                  | boolean
+                  | {
+                        /**
+                         * File name
+                         */
+                        name: string
 
-            /**
-             * File type
-             */
-            mimeType: string
+                        /**
+                         * File type
+                         */
+                        mimeType: string
 
-            /**
-             * File content
-             */
-            buffer: Buffer
-        }
-    }
+                        /**
+                         * File content
+                         */
+                        buffer: Buffer
+                    }
+          }
 
     /**
      * Query parameters to be sent with the URL.

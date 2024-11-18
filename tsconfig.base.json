@@ -1,25 +1,25 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "composite": true,
-    "declaration": true,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": ["es2020", "dom"],
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "types": ["node"],
-    "paths": {
-      "@capillary-test-automation/playwright-lib": [
-        "packages/libs/playwright-lib/src/index.ts"
-      ]
-    }
-  },
-  "exclude": ["node_modules"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "composite": true,
+        "declaration": true,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["es2020", "dom"],
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "types": ["node"],
+        "paths": {
+            "@capillary-test-automation/playwright-lib": [
+                "packages/libs/playwright-lib/src/index.ts"
+            ]
+        }
+    },
+    "exclude": ["node_modules"]
 }

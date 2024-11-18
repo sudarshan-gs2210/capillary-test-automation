@@ -1,6 +1,5 @@
 import test, { expect } from "@playwright/test";
 import { Gym_checkin } from "../../lib/services/rewardable_Activities/gym-checkin/service-clients";
-import { describe } from "node:test";
 
 test.describe("Rewardable Gym Chek", () => {
   test("Gym-checkin progress Spec Health Check", async () => {
