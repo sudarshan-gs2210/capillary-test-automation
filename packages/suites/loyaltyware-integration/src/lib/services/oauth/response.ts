@@ -1,8 +1,8 @@
-import { GenericResponse } from "../common/generic-response"
+import { GenericResponse } from '../common/generic-response'
 
 type OAuthResponseData = {
-    accessToken: string,
+    accessToken: string
     ttlSeconds: number
 }
 
-export type OAuthResponse = GenericResponse<OAuthResponseData>;
+export type OAuthResponse = GenericResponse<OAuthResponseData>

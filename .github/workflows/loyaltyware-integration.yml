@@ -1,92 +1,95 @@
 name: Loyaltyware Integration Tests
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to run the workflow from"
-        default: "main"
-        required: true
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: 'Branch to run the workflow from'
+                default: 'main'
+                required: true
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-          fetch-depth: 0
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the repository
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+                  fetch-depth: 0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
 
-      - name: Enable Corepack and install Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@4.2.2 --activate
+            - name: Enable Corepack and install Yarn
+              run: |
+                  corepack enable
+                  corepack prepare yarn@4.2.2 --activate
 
-      - name: Install dependencies
-        run: yarn install
+            - name: Install dependencies
+              run: yarn install
 
-      - name: Set environment variables
-        run: |
-          echo "CAP_CLUSTER=${{ secrets.CAP_CLUSTER }}" >> $GITHUB_ENV
-          echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
-          echo "PARENT_ORG_ID=${{ secrets.PARENT_ORG_ID }}" >> $GITHUB_ENV
-          echo "CHILD_ORG_ID=${{ secrets.CHILD_ORG_ID }}" >> $GITHUB_ENV
-          echo "PARENT_CLIENT_KEY=${{ secrets.PARENT_CLIENT_KEY }}" >> $GITHUB_ENV
-          echo "PARENT_CLIENT_SECRET=${{ secrets.PARENT_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "CHILD_CLIENT_KEY=${{ secrets.CHILD_CLIENT_KEY }}" >> $GITHUB_ENV
-          echo "CHILD_CLIENT_SECRET=${{ secrets.CHILD_CLIENT_SECRET }}" >> $GITHUB_ENV
+            - name: Lint
+              run: yarn nx affected -t lint
 
-      - name: Run Playwright API tests
-        working-directory: packages/suites/loyaltyware-integration
-        run: yarn test
+            - name: Set environment variables
+              run: |
+                  echo "CAP_CLUSTER=${{ secrets.CAP_CLUSTER }}" >> $GITHUB_ENV
+                  echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
+                  echo "PARENT_ORG_ID=${{ secrets.PARENT_ORG_ID }}" >> $GITHUB_ENV
+                  echo "CHILD_ORG_ID=${{ secrets.CHILD_ORG_ID }}" >> $GITHUB_ENV
+                  echo "PARENT_CLIENT_KEY=${{ secrets.PARENT_CLIENT_KEY }}" >> $GITHUB_ENV
+                  echo "PARENT_CLIENT_SECRET=${{ secrets.PARENT_CLIENT_SECRET }}" >> $GITHUB_ENV
+                  echo "CHILD_CLIENT_KEY=${{ secrets.CHILD_CLIENT_KEY }}" >> $GITHUB_ENV
+                  echo "CHILD_CLIENT_SECRET=${{ secrets.CHILD_CLIENT_SECRET }}" >> $GITHUB_ENV
 
-      - name: Upload report artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: packages/suites/loyaltyware-integration/playwright-report
-          retention-days: 7
+            - name: Run tests
+              working-directory: packages/suites/loyaltyware-integration
+              run: yarn test
 
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    needs: test
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+            - name: Upload report artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: execution-report
+                  path: packages/suites/loyaltyware-integration/playwright-report
+                  retention-days: 7
 
-    steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+    deploy:
+        if: github.ref == 'refs/heads/main'
+        needs: test
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
 
-      - name: Download report
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
-          path: ./_site
+        steps:
+            - name: Setup Pages
+              uses: actions/configure-pages@v4
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./_site
+            - name: Download Report
+              uses: actions/download-artifact@v4
+              with:
+                  name: execution-report
+                  path: ./_site
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+            - name: Upload Pages artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./_site
 
-      - name: Add Report Link to Workflow Summary
-        run: echo "📊 [Click here to view the test report](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
+
+            - name: Add Report Link to Workflow Summary
+              run: echo "📊 [Click here to view the test report](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
