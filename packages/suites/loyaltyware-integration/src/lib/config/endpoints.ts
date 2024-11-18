@@ -17,10 +17,12 @@ export const ENDPOINTS = {
     HEALTH_SURVEY_GET: 'rewardable-activities/detail',
     QUIZ: 'rewardable-activities/quiz/submit',
     GYM_CHECKIN_PROGREESS: 'rewardable-activities/gym-checkin/progress',
-    GYM_CHECKIN_OVERALL_PROGRESS: 'rewardable-activities/gym-checkin/overall-progress',
+    GYM_CHECKIN_OVERALL_PROGRESS:
+        'rewardable-activities/gym-checkin/overall-progress',
     MYACTIVITES: 'user/my-activities',
     REWARDABLE_CLAIM_REWARDS: 'rewardable-activities/claim-reward',
-    RALLY_STRIDE_HISTORY: 'rewardable-activities/rally-stride/tracking-history?',
+    RALLY_STRIDE_HISTORY:
+        'rewardable-activities/rally-stride/tracking-history?',
     USER_SCREEN_NAME: 'user/screen-name',
     USER_LEGAL_AUTH: 'user/legal-auths',
     CHALLENGES_DETAIL: 'challenges/details',
@@ -31,6 +33,5 @@ export const ENDPOINTS = {
     HEALTH_FACTOR: 'health-profile/health-factors',
     HEALTH_BIOMETRIC_KPI: 'health-profile/biometric-kpi/details',
     REWARDS_GIFTCARDS: 'rewards/gift-cards/my-gift-cards',
-    REDEEM_DONATION: 'rewards/donations/redeem'
+    REDEEM_DONATION: 'rewards/donations/redeem',
 }
-

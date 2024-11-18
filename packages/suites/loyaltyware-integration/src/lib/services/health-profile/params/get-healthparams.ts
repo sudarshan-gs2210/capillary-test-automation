@@ -1,5 +1,4 @@
-export type getHealthParams={
-    language?:string,
-    externalFacingId?:string,
-
+export type getHealthParams = {
+    language?: string
+    externalFacingId?: string
 }
