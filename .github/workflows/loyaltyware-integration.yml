@@ -37,10 +37,10 @@ jobs:
                   corepack prepare yarn@4.2.2 --activate
 
             - name: Install dependencies
-              run: yarn install --frozen-lockfile
+              run: yarn install --immutable
 
             - name: Lint
-              run: yarn nx affected -t lint
+              run: yarn nx run-many --target=lint --all
 
             - name: Set environment variables
               run: |
