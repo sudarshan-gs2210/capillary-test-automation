@@ -10,7 +10,7 @@ fi
 
 # Format staged files
 echo "Formatting staged files..."
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=d | grep -E '\.(js|ts|tsx|json|css|scss|html|md)$')
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=d | grep -E '\.(js|ts|tsx|json|css|scss|html|md|yml)$')
 if [ -n "$STAGED_FILES" ]; then
     npx nx format:write --files="$STAGED_FILES" || (echo "Error: Format write failed: $?" && exit 1)
 
