@@ -3,60 +3,90 @@ name: Loyaltyware Integration Tests
 on:
   push:
     branches:
-      - main 
+      - main
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to run the workflow from'
-        default: 'main'
+        description: "Branch to run the workflow from"
+        default: "main"
         required: true
 
-jobs:
-  test-and-deploy:
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  test:
+    runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: "20"
+
+      - name: Enable Corepack and install Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.2.2 --activate
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Set environment variables
+        run: |
+          echo "CAP_CLUSTER=${{ secrets.CAP_CLUSTER }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.HOST }}" >> $GITHUB_ENV
+          echo "PARENT_ORG_ID=${{ secrets.PARENT_ORG_ID }}" >> $GITHUB_ENV
+          echo "CHILD_ORG_ID=${{ secrets.CHILD_ORG_ID }}" >> $GITHUB_ENV
+          echo "PARENT_CLIENT_KEY=${{ secrets.PARENT_CLIENT_KEY }}" >> $GITHUB_ENV
+          echo "PARENT_CLIENT_SECRET=${{ secrets.PARENT_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "CHILD_CLIENT_KEY=${{ secrets.CHILD_CLIENT_KEY }}" >> $GITHUB_ENV
+          echo "CHILD_CLIENT_SECRET=${{ secrets.CHILD_CLIENT_SECRET }}" >> $GITHUB_ENV
 
       - name: Run Playwright API tests
         working-directory: packages/suites/loyaltyware-integration
         run: yarn test
 
-      - name: Deploy Playwright report to GitHub Pages
-        if: success()
-        run: |
-          # Create a temporary directory to hold the report
-          mkdir -p temp-report
-          cp -R packages/suites/loyaltyware-integration/playwright-report/* temp-report
+      - name: Upload report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: packages/suites/loyaltyware-integration/playwright-report
+          retention-days: 7
 
-          # Switch to gh-pages branch
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin gh-pages
-          git checkout gh-pages || git checkout --orphan gh-pages
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-          # Remove old reports, keeping only the last 10
-          ls -dt */ | tail -n +11 | xargs rm -rf
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-          # Create a timestamped folder for the latest report and move it
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          mv temp-report "${TIMESTAMP}"
-          git add "${TIMESTAMP}"
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: ./_site
 
-          # Commit and push the new report
-          git commit -m "Deploy Playwright report - ${TIMESTAMP}"
-          git push origin gh-pages
-          
-      - name: Clean up
-        run: rm -rf temp-report
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Add Report Link to Workflow Summary
+        run: echo "📊 [Click here to view the test report](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
