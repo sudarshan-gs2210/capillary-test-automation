@@ -8,7 +8,7 @@ const test = base.extend<{
     authContextWithParentChild: APIRequestContext
 }>({
     authContext: [
-        async (_, use) => {
+        async ({}, use) => {
             const token = await OAuthServiceClient.generateToken()
             if (!token) throw new Error('Token generation failed')
 
@@ -27,7 +27,7 @@ const test = base.extend<{
     ],
 
     authContextWithParentChild: [
-        async (_, use) => {
+        async ({}, use) => {
             const parentToken = await OAuthServiceClient.generateToken()
             const childToken = await OAuthServiceClient.generateToken({
                 key: ENVCONFIG.CHILD_CLIENT_KEY,
