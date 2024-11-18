@@ -40,7 +40,7 @@ jobs:
               run: yarn install --immutable
 
             - name: Lint
-              run: nx run-many --target=lint --all
+              run: yarn nx run-many --target=lint --all
 
             - name: Set environment variables
               run: |
